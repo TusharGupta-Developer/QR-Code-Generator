@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Styled QR Code</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-size: 2em;
+            color: #007acc;
+        }
+
+        label {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            display: block;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 100%;
+            max-width: 400px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            border: 2px solid #007acc;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        #qrWrapper {
+            padding: 20px;
+            background: #e6f2ff;
+            display: inline-block;
+            border: 2px solid #007acc;
+            border-radius: 20px;
+            box-shadow: 0 0 12px rgba(0, 122, 204, 0.3);
+            max-width: 100%;
+        }
+
+        #qrcodeCanvas {
+            border-radius: 12px;
+            max-width: 100%;
+            height: auto;
+        }
+
+        #downloadBtn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #007acc;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            max-width: 200px;
+        }
+
+        #downloadBtn:hover {
+            background: #005f99;
+        }
+
+        footer {
+            margin-top: 40px;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .love {
+            color: #e25555;
+            font-size: 1.2em;
+        }
+
+        .creator {
+            font-weight: bold;
+            color: #007acc;
+        }
+
+        .creator:hover{
+            color: #005f99;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>QR Code Generator</h1>
+
+    <label for="linkInput">Enter any text:</label>
+    <input type="text" id="linkInput" placeholder="Type here..." />
+
+    <h2>Scan the QR Code</h2>
+    <div id="qrWrapper">
+        <h5>See Here Live Generation of Your QR Code</h5>
+        <canvas id="qrcodeCanvas"></canvas>
+    </div>
+    <br />
+    <button id="downloadBtn">Download</button>
+
+    <footer>
+        Made with <span class="love">❤️</span> by <a class="creator" href="https://tushar-portfolio-webapp.netlify.app/">Tushar Gupta</a>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script>
+        const canvas = document.getElementById("qrcodeCanvas");
+        const input = document.getElementById("linkInput");
+
+        function generateQRCode(link) {
+            QRCode.toCanvas(canvas, link, {
+                width: 300,
+                color: {
+                    dark: "#000000",
+                    light: "#ffffff"
+                }
+            }, function (error) {
+                if (error) console.error(error);
+            });
+        }
+
+        generateQRCode(input.value);
+
+        input.addEventListener("input", () => {
+            generateQRCode(input.value);
+        });
+
+        document.getElementById("downloadBtn").addEventListener("click", function () {
+            const dataURL = canvas.toDataURL("image/png");
+            const a = document.createElement("a");
+            a.href = dataURL;
+            a.download = "qr-code.png";
+            a.click();
+        });
+    </script>
+</body>
+
+</html>
